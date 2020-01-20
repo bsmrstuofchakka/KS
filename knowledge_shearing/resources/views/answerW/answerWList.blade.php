@@ -1,0 +1,123 @@
+@include('layout.beforeSearchMaster')
+
+<div class="social clear">
+    <div class="searchbtn clear">
+        {!! Form::open(array('url' => url('answersW/search').'?id='.$sharing->id, 'files' => true, 'class'=>'d-flex justify-content-between') )  !!}
+
+        <input type="text" name="searchAnswerW"   value="@if(!empty($searchAnswerW)) {{$searchAnswerW->searchAnswerW}} @endif" placeholder="Search keyword..."/>
+        <input type="submit" name="submit" value="Search"/>
+        {!! Form::close() !!}
+    </div>
+</div>
+
+@include('layout.afterSearchMaster')
+
+
+<div class="contentsection contemplete clear">
+    <div class="maincontent clear">
+
+        @if(!empty($sharing))
+
+                <div class="samepost clear">
+                    <h2><a href="">{{$sharing->qcategoryname}}</a></h2>
+
+                    <img width="100" src="{{asset('/uploads/personalPhotos/'.$sharing->photo)}}"  alt="">
+
+                    <h6><a href="{{url('particularProfileW').'?id='.$sharing->uid}}">{{$sharing->username}}   </a>  Asked: {{$sharing->updated_at}}   </h6>
+
+
+                    <h1>{{$sharing->qtitle}}  </h1>
+                    <div>
+                        <p>
+                            {{$sharing->qcontent}}
+                        </p>
+                    </div>
+                    @if($sharing->ufile!=null)
+                    <h5><a download="true" href="{{asset(\Illuminate\Support\Facades\Storage::url($sharing->ufile))}}">---click Image/Pdf</a></h5>
+                    @endif
+
+                    <div class="readmore clear">
+                        <a href="{{url('answersW/addForm').'?id='.$sharing->id}}">Answer</a>
+                    </div>
+                </div>
+
+        @endif
+
+        <div class="answer">
+            @if($ans_count==0)
+            <h2>{{$ans_count}} Answer</h2>
+            @else
+                <h2>{{$ans_count}} Answers</h2>
+            @endif
+        </div>
+
+            @if(isset($answers[0]))
+                @foreach($answers as $answer)
+                    <div class="answerpost clear">
+
+                        <img width="100" src="{{asset('/uploads/personalPhotos/'.$answer->photo)}}"  alt="">
+
+                        <h6><a href="{{url('particularProfileW').'?id='.$answer->uid}}">{{$answer->username}}   </a>  Asked: {{$answer->updated_at}}   </h6>
+
+
+
+                        <h1> </h1>
+                        <div>
+                            <p>
+                                {{$answer->acontent}}
+                            </p>
+                        </div>
+                        @if($answer->afile!=null)
+                        <h5><a download="true" href="{{asset(\Illuminate\Support\Facades\Storage::url($answer->afile))}}">---click Image/Pdf</a></h5>
+                       @endif
+                        <div class="leftmore clear">
+                            <a href="{{url('replies/addForm').'?id='.$answer->id}}">Reply</a>
+                        </div>
+                        <script type="text/javascript" src="{{asset('/js/answer-reply/scrolltop.js')}}"></script>
+                        <script type="text/javascript" src="{{asset('/js/answer-reply/jquery.js')}}"></script>
+
+                    </div>
+
+                    @foreach($replies as $reply)
+                        @if($reply->aid==$answer->id)
+                    <div class="replypost clear">
+                        <img width="100" src="{{asset('/uploads/personalPhotos/'.$reply->photo)}}"  alt="">
+                        <h6><a href="{{url('particularProfileW').'?id='.$reply->uid}}">{{$reply->username}}   </a>  Asked: {{$reply->updated_at}}   </h6>
+
+                        <h1>  </h1>
+                        <p>
+                            {{$reply->rcontent}}
+
+                        </p>
+                        @if($reply->rfile!=null)
+                        <h5><a download="true" href="{{asset(\Illuminate\Support\Facades\Storage::url($reply->rfile))}}">---click Image/Pdf</a></h5>
+                        @endif
+
+                    </div>
+                        @endif
+                    @endforeach
+                @endforeach
+            @endif
+
+
+
+
+
+
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+@include('layout.afterMain')
+
+
